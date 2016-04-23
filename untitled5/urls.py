@@ -19,7 +19,10 @@ from UrbanExplorer import views
 
 urlpatterns = [
     #url(r'^UrbanExplorer/', include('UrbanExplorer.urls')), // enables including external file
+
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'), # function index in views.py
+    url(r'venue/(?P<venue_id>[0-9]+)/$', views.venue, name='venue'),
+    url(r'riddle/(?P<riddle_id>[0-9]+)/$', views.riddle, name='riddle'),
 ]
 

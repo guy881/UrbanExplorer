@@ -1,13 +1,19 @@
 from __future__ import unicode_literals
-
 from django.db import models
+
+
+# Django admin login & pass: admin/adminadmin
 
 class Venue(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=40)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
 
 class Riddle(models.Model):
     name = models.CharField(max_length=100)
@@ -16,6 +22,9 @@ class Riddle(models.Model):
     rating = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
-    # After changing model run: python manage.py makemigrations UrbanExplorer
+    def __unicode__(self):
+        return unicode(self.name)
+
+        # After changing model run: python manage.py makemigrations UrbanExplorer

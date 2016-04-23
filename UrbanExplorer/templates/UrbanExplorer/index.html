@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Urban Explorer</title>
+</head>
+<body>
+{% if riddles_list %}
+    <ul>
+    {% for riddle in riddles_list %}
+        <li><a href="/riddle/{{ riddle.id }}/">{{ riddle.name }}</a></li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    None of the riddles could be shown.
+{% endif %}
+</body>
+</html>
