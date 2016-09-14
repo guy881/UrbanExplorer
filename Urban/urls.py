@@ -1,4 +1,4 @@
-"""untitled5 URL Configuration
+"""Urban URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -13,16 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.conf import settings
+from django.conf.urls import url,include
 from django.contrib import admin
-from UrbanExplorer import views
+from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
-    #url(r'^UrbanExplorer/', include('UrbanExplorer.urls')), // enables including external file
-
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index'), # function index in views.py
-    url(r'venue/(?P<venue_id>[0-9]+)/$', views.venue, name='venue'),
-    url(r'riddle/(?P<riddle_id>[0-9]+)/$', views.riddle, name='riddle'),
-]
+    # api
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/', include('accounts.urls', namespace='accounts')),
 
+    url(r'^', include('riddles.urls', namespace='riddles')),
+    # url(r'^api/auth/token', obtain_jwt_token),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
