@@ -27,4 +27,4 @@ urlpatterns = [
 
     url(r'^', include('riddles.urls', namespace='riddles')),
     # url(r'^api/auth/token', obtain_jwt_token),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

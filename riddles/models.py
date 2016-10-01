@@ -68,6 +68,7 @@ class Riddle(models.Model):
     def distance(self, destination, my_range):
         lat1, lon1 = float(self.lat), float(self.long)
         lat2, lon2 = destination
+        lat2, lon2=float(lat2), float(lon2)
         radius = 6371  # km
 
         dlat = math.radians(lat2 - lat1)
@@ -91,6 +92,13 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question
+
+    def check_answer(self, given_ans):
+        if given_ans.lower() == self.answer.lower():
+            return True
+        else:
+            return False
+
 
 
 class Images(models.Model):

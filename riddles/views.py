@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import django_filters
 
-
+from .forms import *
 from .models import *
 from . import serializers
 
@@ -21,8 +21,8 @@ class RiddleFilter(filters.FilterSet,):
         model = Riddle
         fields = ['name','description','long','lat','times_resolved','categories','min_rate','max_rate']
 
-
-class RiddleListView(generics.ListAPIView):
+#API VIEWS
+class RiddleListAPIView(generics.ListAPIView):
     """Returns list of riddles with specific filters"""
 
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter )
@@ -39,20 +39,21 @@ class RiddleListView(generics.ListAPIView):
 
 
 
-class NearRiddleListView(RiddleListView):
+class NearRiddleListAPIView(RiddleListAPIView):
     """return list of riddles in range of given locations"""
     def get_queryset(self):
-        in_range_list = [t.id for t in Riddle.objects.all()
-                            if t.distance(
-                                (float(self.kwargs['lat']), float(self.kwargs['lon'])),
-                                float(self.kwargs['my_range'])
-                            )
-                ]
+        request=self.request
+        lat, lon, my_range = request.GET.get("lat"), request.GET.get("lon"), request.GET.get("my_range")
+        if lat and lon and my_range:
+            in_range_list = [t.id for t in Riddle.objects.all()
+                             if t.distance((lat, lon), my_range)]
+            return Riddle.objects.filter(id__in=in_range_list)
+        else:
+            return Riddle.objects.all()
 
-        return Riddle.objects.filter(id__in = in_range_list)
 
 
-class RiddleDetailView(generics.RetrieveAPIView):
+class RiddleDetailAPIView(generics.RetrieveAPIView):
     """Returns chosen by id riddle"""
 
     serializer_class = serializers.RiddleSerializer
@@ -61,7 +62,7 @@ class RiddleDetailView(generics.RetrieveAPIView):
         return Riddle.objects.all()
 
 
-class QuestionsListView(generics.ListAPIView):
+class QuestionsListAPIView(generics.ListAPIView):
     """returns all question with answers for specific riddle"""
     serializer_class = serializers.QuestionSerializer
 
@@ -69,7 +70,7 @@ class QuestionsListView(generics.ListAPIView):
         return Question.objects.filter( riddle = self.kwargs['riddle_pk'] )
 
 
-class RateRiddle(views.APIView):
+class RateRiddleAPI(views.APIView):
     """Rate riddle and calculate values"""
 
     def put(self, request, pk , new_rate):
@@ -84,3 +85,68 @@ class RateRiddle(views.APIView):
         return Response({
             'status': 0,
         })
+
+#Normal Views
+
+def riddle_list(request):
+
+    f = RiddleFilter(request.GET, queryset=Riddle.objects.all())
+    return render(request, 'riddles/riddle_list.html', {'riddle_list': f})
+
+def near_riddle_list(request):
+    f = Riddle.objects.all()
+    lat, lon, my_range = request.GET.get("lat"), request.GET.get("lon"), request.GET.get("my_range")
+    if lat and lon and my_range:
+        in_range_list = [t.id for t in Riddle.objects.all()
+                         if t.distance((lat, lon), my_range)]
+        f.filter(id__in=in_range_list)
+
+    f = RiddleFilter(request.GET, queryset=f)
+
+    return render(request, 'riddles/riddle_list.html', {'riddle_list': f})
+
+def detail_riddle_view(request, pk):
+
+    riddle = get_object_or_404(
+        Riddle,
+        id=pk
+    )
+
+    photos = Images.objects.filter(riddle=pk)
+
+    return render(request, 'riddles/riddle_detail.html', {'riddle': riddle,'images':photos,})
+
+def start_riddle_view(request, pk):
+
+    riddle = get_object_or_404(
+        Riddle,
+        id=pk
+    )
+    return render(request, 'riddles/riddle_map.html', {'riddle': riddle,})
+
+def questions_view(request, pk):
+    if request.method == 'POST':
+        formset = QuestionsFormSet(request.POST,)
+        if request.user.is_authenticated():
+            for form in formset:
+                if (request.POST.get(form.prefix + '-question_id')):
+                    question_id = int(request.POST.get(form.prefix + '-question_id'))
+                    answer = request.POST.get(form.prefix + '-answer')
+                    question_obj = get_object_or_404(Question, id=question_id)
+                    if not question_obj or not question_obj.check_answer(answer):
+                        form.errors['answer'] = (u'Niepoprawna odpowiedz',)
+        return render(request, 'riddles/questions.html', {'questions': '', "forms": formset})
+
+    if request.method == 'GET':
+        questions = get_list_or_404(
+            Question,
+            riddle=pk
+        )
+        initial_data = []
+        for question in questions:
+            initial_data.append({
+                "question_id": question.id,
+                "question_content": question.question
+            })
+        formset = QuestionsFormSet(initial=initial_data)
+        return render(request, 'riddles/questions.html', {'questions': questions,"forms":formset})
