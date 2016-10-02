@@ -1,25 +1,19 @@
-{% load staticfiles i18n %}
+{% extends "base.html" %}
+{% block title %}Riddle-{{ riddle.name }}{% endblock %}
+{% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<ul>
+    <ul>
+        <div><h1>{{ riddle.name }}</h1>
+            {{ riddle.description }}<br>
+            <img src="{{ request.build_absolute_uri }}../../{{ riddle.logo_image }}" width="200px" alt="Logo img">
+            <br>  rate:{{ riddle.rate }}<br>
 
-         <div><h1>{{ riddle.name }}</h1>
-        {{ riddle.description }}<br>
-         <img src="{{ request.build_absolute_uri }}../../{{ riddle.logo_image }}" width="200px" alt="Logo img">
-               <br>  rate:{{ riddle.rate }}<br>
-
-                 Done {{ riddle.times_resolved }} times<br>
-             {% for ca in  riddle.categories.all%}
-                    {{ ca.name}},
+            Done {{ riddle.times_resolved }} times<br>
+            {% for ca in  riddle.categories.all%}
+                {{ ca.name}},
             {% endfor %}
         </div>
 
-</ul>
-</body>
-</html>
+    </ul>
+
+{% endblock %}

@@ -1,12 +1,6 @@
-{% load staticfiles i18n %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %} List of all riddles {% endblock %}
+{% block content %}
 <ul>
 
     {% for riddle in riddle_list%}
@@ -23,5 +17,4 @@
         </div>
     {% endfor %}
 </ul>
-</body>
-</html>
+{% endblock %}

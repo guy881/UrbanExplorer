@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="POST" action="."> {% csrf_token %}
-{{ forms.management_form }}
+{% extends "base.html" %}
+{% block title %} Questions {% endblock %}
+{% block content %}
 
-    {% for form in forms %}
+    <h1> Congratulations- you have found me!</h1>
 
-            {{ form }}<br>
-    {%  endfor %}
-            <input type='submit' value='Answer' class='btn btn-default'>
-        </form>
+    {% for question in question_list%}
+        <div class="question">
+             <h2>{{ question.title }}</h2>
+             <h3>{{ question.text }}</h3>
+        </div>
+        <div class="answer">
+            <label>Answer</label>
+            <input type="text">
+        </div>
+    {% endfor %}
 
-</body>
-</html>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<nav class="navbar navbar-inverse">
+    {% block navbar %}
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/posts" ><img src="{% static 'images/icons/social1.png'%}" style="display: inline;  margin-right: -5px; width: 32px;">acebuk</a>
+        </div>#3B5998
+        <ul class="nav navbar-nav">
+            <li><a href="/posts"><img src="{% static 'images/icons/list.png'%}" style="display: inline; width:30px; "> All Posts</a></li>
+            <li><a href="/post/new"><img src="{% static 'images/icons/signs.png'%}" style="display: inline; width:30px; "> Add Post</a></li>
+        </ul>
+        {% if user %}
+            <div class="navbar-right">
+                <a class="navbar-brand" href="/myposts"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> {{ user }}</a>
+                <a class="navbar-brand" href="/logout"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> Logout</a>
+            </div>
+        {% else %}
+            <div class="navbar-right">
+                <a class="navbar-brand active" href="/login">Login</a>
+                <a class="navbar-brand active" href="/register">Register</a>
+            </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+</nav>
