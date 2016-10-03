@@ -13,6 +13,10 @@
                 {{ ca.name}},
             {% endfor %}
         </div>
+    {% for im in images %}
+            <img src="{{ request.build_absolute_uri }}../../pic/{{ im.register_image }}" width="200px" alt="Logo img">
+
+    {% endfor %}
 
     </ul>
 

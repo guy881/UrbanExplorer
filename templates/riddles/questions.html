@@ -3,17 +3,37 @@
 {% block content %}
 
     <h1> Congratulations- you have found me!</h1>
+    <span> Now, answer my questions for extra points!</span>
+        <form method="POST" action="."> {% csrf_token %}
+        {{ forms.management_form }}
 
-    {% for question in question_list%}
-        <div class="question">
-             <h2>{{ question.title }}</h2>
-             <h3>{{ question.text }}</h3>
-        </div>
-        <div class="answer">
-            <label>Answer</label>
-            <input type="text">
-        </div>
-    {% endfor %}
+            {% for question_form in forms %}
+
+                {{ question_form.id }}
+                <div class="question">
+                {{ question_form.question_id }}
+                    <h2>{{question_form.answer.label }}</h2>
+                    <h3>{{question_form.answer }}</h3>
+                </div>
+
+                <span class="help-block">
+                    {{ question_form.answer.errors }}
+                </span>
+
+            {%  endfor %}
+            <input type='submit' value='Answer' class='btn btn-default'>
+        </form>
+{##}
+{#    {% for question in question_list%}#}
+{#        <div class="question">#}
+{#             <h2>{{ question.title }}</h2>#}
+{#             <h3>{{ question.text }}</h3>#}
+{#        </div>#}
+{#        <div class="answer">#}
+{#            <label>Answer</label>#}
+{#            <input type="text">#}
+{#        </div>#}
+{#    {% endfor %}#}
 
 
 {% endblock %}

@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 from rest_framework import generics, filters, views
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,get_list_or_404
 import django_filters
 
 from .forms import *
@@ -125,28 +125,33 @@ def start_riddle_view(request, pk):
     return render(request, 'riddles/riddle_map.html', {'riddle': riddle,})
 
 def questions_view(request, pk):
+    questions = get_list_or_404(
+        Question,
+        riddle=pk
+    )
+    initial_data = []
+    for question in questions:
+        initial_data.append({
+            "question_id": question.id,
+            "question_content": question.question
+        })
     if request.method == 'POST':
         formset = QuestionsFormSet(request.POST,)
         if request.user.is_authenticated():
             for form in formset:
                 if (request.POST.get(form.prefix + '-question_id')):
+                    form.fields['answer'].widget.attrs['readonly'] = True
+
                     question_id = int(request.POST.get(form.prefix + '-question_id'))
                     answer = request.POST.get(form.prefix + '-answer')
                     question_obj = get_object_or_404(Question, id=question_id)
                     if not question_obj or not question_obj.check_answer(answer):
-                        form.errors['answer'] = (u'Niepoprawna odpowiedz',)
+                        form.errors['answer'] = 'Niepoprawna odpowiedz'
+
+                    else:
+                        form.errors['answer'] = '+ 100pkt'
         return render(request, 'riddles/questions.html', {'questions': '', "forms": formset})
 
     if request.method == 'GET':
-        questions = get_list_or_404(
-            Question,
-            riddle=pk
-        )
-        initial_data = []
-        for question in questions:
-            initial_data.append({
-                "question_id": question.id,
-                "question_content": question.question
-            })
         formset = QuestionsFormSet(initial=initial_data)
         return render(request, 'riddles/questions.html', {'questions': questions,"forms":formset})
