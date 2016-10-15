@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^get_near_riddles$', views.near_riddle_list),
     url(r'^get_riddle/(?P<pk>[0-9]+)/', views.detail_riddle_view, name='get_riddle'),
 
-    url(r'^questions_view/(?P<pk>[0-9]+)/', views.questions_view),
+    url(r'^questions_view/(?P<pk>[0-9]+)/', views.questions_view, name='questions'),
 
     # url(r'get_riddles_list', views.RiddleListView.as_view(), name='get_riddles_list'),
 

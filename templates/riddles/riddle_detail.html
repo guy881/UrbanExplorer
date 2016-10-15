@@ -17,6 +17,8 @@
             <img src="http://{{ request.META.HTTP_HOST }}/pic/{{ im.register_image }}" width="200px" alt="registered img">
 
     {% endfor %}
+    <br>
+    <a href = "{% url 'riddles:questions' riddle.pk %}">Questions</a>
 
     </ul>
 
