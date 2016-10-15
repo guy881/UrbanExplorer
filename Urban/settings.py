@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for Urban project.
 
@@ -191,3 +192,4 @@ JWT_AUTH = {
 
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+DEFAULT_CHARSET = 'utf-8'

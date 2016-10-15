@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
@@ -82,7 +83,7 @@ def profile_view(request):
         if request.user.is_authenticated():
             if form.is_valid():
                 # acc.profile_picture.delete()
-                #trzeba by ogarnać jak kasować zdjęcia z bazy
+                #TODO:trzeba by ogarnać jak kasować zdjęcia z bazy
                 form.save()
 
 
