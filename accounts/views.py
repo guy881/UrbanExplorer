@@ -64,3 +64,26 @@ class UserLoginAPIView(APIView):
             new_data = serializer.data
             return Response(new_data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+#Views
+from django.shortcuts import get_object_or_404, render
+from .models import *
+from .forms import *
+
+def profile_view(request):
+
+    acc = get_object_or_404(
+        Account,
+        id=request.user.pk
+    )
+    form = ProfileForm()
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST,request.FILES, instance=acc)
+        if request.user.is_authenticated():
+            if form.is_valid():
+                # acc.profile_picture.delete()
+                #trzeba by ogarnać jak kasować zdjęcia z bazy
+                form.save()
+
+
+    return render(request, 'profile.html', {'user': acc,'form':form})
