@@ -4,7 +4,7 @@
 <ul>
 
     {% for riddle in riddle_list%}
-         <div><h1>{{ riddle.name }}</h1>
+         <div><h1><a href = "{% url 'riddles:get_riddle' riddle.pk %}">{{ riddle.name }}</a></h1>
         {{ riddle.description }}<br>
          <img src="http://{{ request.META.HTTP_HOST }}/pic/{{ riddle.logo_image }}" width="200px" alt="Logo img">
                  {{ riddle.rate }}<br>
