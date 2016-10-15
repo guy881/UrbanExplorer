@@ -107,7 +107,7 @@ def login(request):
 
     if request.method == "POST":
         #TODO zmienić na dynamiczny link
-        login = requests.post('http://127.0.0.1:8000' + reverse('accounts:api_login'),
+        login = requests.post('http://http://jokraska.ct8.pl' + reverse('accounts:api_login'),
                               data={'username': request.POST['username'], 'password': request.POST['password']})
         response = json.loads(login.text)
 
