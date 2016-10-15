@@ -43,13 +43,13 @@ class Riddle(models.Model):
 
     logo_image = models.ImageField(
         _('logo image'),
-        upload_to='pic/logos',
+        upload_to='logos',
         null=True,
         blank=True
     )
     min_image = models.ImageField(
         _('min image'),
-        upload_to='pic/min_logos',
+        upload_to='min_logos',
         null=True,
         blank=True
     )
@@ -105,7 +105,7 @@ class Images(models.Model):
     riddle = models.ForeignKey(Riddle, db_index=True)
 
     register_image = models.ImageField(
-        _('pic/register image'),
+        _('register image'),
         upload_to='register_images',
         null=True,
         blank=True
