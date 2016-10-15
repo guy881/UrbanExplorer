@@ -6,7 +6,7 @@
     {% for riddle in riddle_list%}
          <div><h1>{{ riddle.name }}</h1>
         {{ riddle.description }}<br>
-         <img src="{{ request.build_absolute_uri }}/../{{ riddle.logo_image }}" width="200px" alt="Logo img">
+         <img src="http://{{ request.META.HTTP_HOST }}/pic/{{ riddle.logo_image }}" width="200px" alt="Logo img">
                  {{ riddle.rate }}<br>
 
                  {{ riddle.times_resolved }}<br>
