@@ -3,16 +3,18 @@
     {% block navbar %}
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/posts" ><img src="{% static 'images/icons/social1.png'%}" style="display: inline;  margin-right: -5px; width: 32px;">acebuk</a>
-        </div>#3B5998
+            <a class="navbar-brand" href="/posts"> Urban Explorer</a>
+        </div>
         <ul class="nav navbar-nav">
-            <li><a href="/posts"><img src="{% static 'images/icons/list.png'%}" style="display: inline; width:30px; "> All Posts</a></li>
-            <li><a href="/post/new"><img src="{% static 'images/icons/signs.png'%}" style="display: inline; width:30px; "> Add Post</a></li>
+            <li><a href="/get_riddles_list"> Nearest </a></li>
+            <li><a href="/get_riddles_list"> Trending </a></li>
+            <li><a href="/get_riddles_list"> Top rated </a></li>
+            <li><a href="/post/new">My Account</a></li>
         </ul>
-        {% if user %}
+        {% if user and user != AnonymousUser %}
             <div class="navbar-right">
-                <a class="navbar-brand" href="/myposts"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> {{ user }}</a>
-                <a class="navbar-brand" href="/logout"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> Logout</a>
+                <a class="navbar-brand" href="/myposts"> {{ user }}</a>
+                <a class="navbar-brand" href="/logout">Logout</a>
             </div>
         {% else %}
             <div class="navbar-right">
