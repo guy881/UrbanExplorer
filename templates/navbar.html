@@ -3,20 +3,20 @@
     {% block navbar %}
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/posts" ><img src="{% static 'images/icons/social1.png'%}" style="display: inline;  margin-right: -5px; width: 32px;">acebuk</a>
+            <a class="navbar-brand" href="{% url 'riddles:get_near_riddles' %}" ><img src="{% static 'images/icons/social1.png'%}" style="display: inline;  margin-right: -5px; width: 32px;">All Quests</a>
         </div>#3B5998
         <ul class="nav navbar-nav">
-            <li><a href="/posts"><img src="{% static 'images/icons/list.png'%}" style="display: inline; width:30px; "> All Posts</a></li>
-            <li><a href="/post/new"><img src="{% static 'images/icons/signs.png'%}" style="display: inline; width:30px; "> Add Post</a></li>
+            <li><a href="{% url 'riddles:get_near_riddles' %}?min_rate=4"><img src="{% static 'src/img/fire.png'%}" style="display: inline; width:25px; "> Best Quests</a></li>
+            <li><a href="{% url 'riddles:riddle_list' %}"><img src="{% static 'src/img/fire.png'%}" style="display: inline; width:25px; "> Trending</a></li>
         </ul>
-        {% if user %}
+        {% if user.user %}
             <div class="navbar-right">
-                <a class="navbar-brand" href="/myposts"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> {{ user }}</a>
-                <a class="navbar-brand" href="/logout"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> Logout</a>
+                <a class="navbar-brand" href="{% url 'accounts:profile' %}"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:25px; "> {{ user.user }} </a>
+                <a class="navbar-brand" href="{% url 'accounts:logout' %}"><img src="{% static 'images/icons/social1.png'%}" style="display: inline; width:30px; "> Logout</a>
             </div>
         {% else %}
             <div class="navbar-right">
-                <a class="navbar-brand active" href="/login">Login</a>
+                <a class="navbar-brand active" href="{% url 'accounts:login' %}">Login</a>
                 <a class="navbar-brand active" href="/register">Register</a>
             </div>
         {% endif %}

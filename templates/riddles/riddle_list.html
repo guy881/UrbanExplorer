@@ -1,20 +1,75 @@
 {% extends "base.html" %}
 {% block title %} List of all riddles {% endblock %}
 {% block content %}
-<ul>
 
-    {% for riddle in riddle_list%}
-         <div><h1><a href = "{% url 'riddles:get_riddle' riddle.pk %}">{{ riddle.name }}</a></h1>
-        {{ riddle.description }}<br>
-         <img src="http://{{ request.META.HTTP_HOST }}/pic/{{ riddle.logo_image }}" width="200px" alt="Logo img">
-                 {{ riddle.rate }}<br>
+    <div class="row">
 
-                 {{ riddle.times_resolved }}<br>
-             {% for ca in  riddle.categories.all%}
+    <div id="search_block" class="panel-body">
+        <form role="form" class="form-horizontal" method="post" action="">
+            <div class="form-group">
+                <label class="col-xs-2 col-sm-2 col-md-1 control-label" for="v_search">Search:</label>
+                <div class="col-xs-8 col-sm-8 col-md-4">
+                    <input type="text" placeholder="Enter Search Keywords" value="" name="v_search" id="v_search" class="form-control">
+                </div>
+                <div class="button-group col-xs-8 col-sm-8 col-md-2">
+                    <button class="btn btn-primary" value="search" name="search" type="submit">Search</button>
+                    <button class="btn btn-default" value="reset" name="reset" type="reset">Reset</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 col-sm-2 col-md-1 control-label" for="filters">Filters:</label>
+                <div class="col-xs-8 col-sm-8 col-md-2" id="filters">
+                    <select class="form-control" name="section_id">
+                        <option value="all">All Sections</option>
+                        <option value="all">Test</option>
+                    </select>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-2">
+                    <select class="form-control" name="category_id">
+                        <option value="all">All Categories</option>
+                        <option value="71">Test</option>
+                    </select>
+                </div>
+            </div>
 
-                    {{ ca.name}},
-            {% endfor %}
+        </form>
+
+    </div>
+    <div class="row">
+     {% for riddle in riddle_list%}
+        <div class="page-header filled img-bg">
+            <div class="overlay-bg">
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h2><a href = "{% url 'riddles:get_riddle' riddle.pk %}">{{ riddle.name }}</a></h2>
+                    <img src="http://{{ request.META.HTTP_HOST }}/pic/{{ riddle.logo_image }}" width="200px" alt="Logo img">
+                </div>
+                <div class="col-md-9">
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col-md-9" >
+                            <p>{{ riddle.description }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <ul class="list-page-breadcrumb">
+                                <li>Rate : <strong>{{ riddle.rate }}</strong></li>
+                                <li>Times resolved: <strong>{{ riddle.times_resolved }}</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <br>
+                        <p><strong>
+                            {% for ca in  riddle.categories.all%}
+                                    {{ ca.name}}
+                            {% endfor %}
+                        </strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endfor %}
-</ul>
+     {% endfor %}
+    </div>
+
 {% endblock %}

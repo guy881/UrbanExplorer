@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     #apps
     'riddles',
-    'accounts'
-
+    'accounts',
+    'django_extensions'
 
 ]
 

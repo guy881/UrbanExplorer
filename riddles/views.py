@@ -91,12 +91,13 @@ class RateRiddleAPI(views.APIView):
 
 def riddle_list(request):
 
-    f = RiddleFilter(request.GET, queryset=Riddle.objects.all())
+    f = RiddleFilter(request.GET, queryset=Riddle.objects.all().order_by('-times_resolved'))
     return render(request, 'riddles/riddle_list.html', {'riddle_list': f})
 
 def near_riddle_list(request):
     f = Riddle.objects.all()
     lat, lon, my_range = request.GET.get("lat"), request.GET.get("lon"), request.GET.get("my_range")
+    order = request.GET.get("order")
     if lat and lon and my_range:
         in_range_list = [t.id for t in Riddle.objects.all()
                          if t.distance((lat, lon), my_range)]
@@ -126,10 +127,8 @@ def start_riddle_view(request, pk):
     return render(request, 'riddles/riddle_map.html', {'riddle': riddle,})
 
 def questions_view(request, pk):
-    questions = get_list_or_404(
-        Question,
-        riddle=pk
-    )
+    questions = Question.objects.filter(riddle=pk).order_by('pk')
+
     initial_data = []
     for question in questions:
         initial_data.append({
@@ -137,7 +136,7 @@ def questions_view(request, pk):
             "question_content": question.question
         })
     if request.method == 'POST':
-        formset = QuestionsFormSet(request.POST,)
+        formset = QuestionsFormSet( request.POST)
         if request.user.is_authenticated():
             for form in formset:
                 if (request.POST.get(form.prefix + '-question_id')):

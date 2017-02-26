@@ -14,12 +14,12 @@ class Account(models.Model):
 
     lvl = models.DecimalField(
         max_digits=5,
-        decimal_places=3,
+        decimal_places=0,
         default=1
     )
     experience = models.DecimalField(
         max_digits=5,
-        decimal_places=3,
+        decimal_places=0,
         default=0
     )
     profile_picture = models.ImageField(
@@ -30,7 +30,7 @@ class Account(models.Model):
     )
     @property
     def ranking(self):
-        return Account.objects.filter(experience__lte=self.experience).count()
+        return Account.objects.filter(experience__gte=self.experience).count()
 
     def add_experience(self, added):
         level_tab=[1000,2500,5000,10000,17500,27500]
